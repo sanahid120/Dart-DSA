@@ -1,4 +1,5 @@
-// A node stores a value and a reference to the next node in the list.
+import 'dart:io';
+
 class Node {
   int value;
   Node? next;
@@ -7,27 +8,21 @@ class Node {
 }
 
 class LinkedList {
-  // The first node; null means the list is empty.
   Node? head;
-
-  // Add a new node at the beginning of the list.
+// Add a new node at the beginning of the list
   void addFirst(int value) {
     final newNode = Node(value);
     newNode.next = head;
     head = newNode;
   }
 
-  // Add a new node at the end of the list.
+// Add a new node at the end of the list
   void addLast(int value) {
     final newNode = Node(value);
-
-    // If there are no nodes yet, the new node becomes the head.
     if (head == null) {
       head = newNode;
       return;
     }
-
-    // Follow next references until reaching the last node.
     Node current = head!;
     while (current.next != null) {
       current = current.next!;
@@ -35,7 +30,54 @@ class LinkedList {
     current.next = newNode;
   }
 
-  // Print each node's value from the head to the end of the list.
+// Remove the first node from the list
+  void removeFirst() {
+    if (head == null) {
+      return;
+    }
+    head = head!.next;
+  }
+
+// Remove the last node from the list
+  void removeLast() {
+    if (head == null) {
+      return;
+    }
+    if (head!.next == null) {
+      head = null;
+      return;
+    }
+    Node current = head!;
+    while (current.next!.next != null) {
+      current = current.next!;
+    }
+    current.next = null;
+  }
+
+// Search for a value in the list
+  bool search(int value) {
+    Node? current = head;
+    while (current != null) {
+      if (current.value == value) {
+        return true;
+      }
+      current = current.next;
+    }
+    return false;
+  }
+
+// Get the size of the list
+  int size() {
+    int count = 0;
+    Node? current = head;
+    while (current != null) {
+      count++;
+      current = current.next;
+    }
+    return count;
+  }
+
+// Print all elements in the list
   void printList() {
     Node? current = head;
     while (current != null) {
@@ -47,11 +89,22 @@ class LinkedList {
 
 void main() {
   final newList = LinkedList();
+  stdout.writeln("Singly Linked List Implementation in Dart");
+
+  print("Adding elements to the linked list:");
   newList.addFirst(10);
   newList.addFirst(20);
   newList.addFirst(30);
   newList.addLast(40);
-
-  // Prints: 30, 20, 10, 40 (one value per line).
+  print("Current linked list:");
   newList.printList();
+  newList.removeFirst();
+  print("Linked list after removing the first element:");
+  newList.printList();
+  newList.removeLast();
+  print("Linked list after removing the last element:");
+  newList.printList();
+  print("Size of the linked list: ${newList.size()}");
+  print("Is 20 in the linked list? ${newList.search(20)}");
+  print("Is 50 in the linked list? ${newList.search(50)}");
 }
